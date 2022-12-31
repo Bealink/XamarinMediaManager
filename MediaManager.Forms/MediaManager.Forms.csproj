@@ -1,7 +1,6 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;xamarin.ios10;xamarin.mac20;xamarin.tvos10;monoandroid12.0;tizen40</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">uap10.0.18362;net472;netcoreapp3.1;$(TargetFrameworks)</TargetFrameworks>
+    <TargetFrameworks>monoandroid12.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -20,7 +19,27 @@
     <Compile Remove="Platforms\**\*.cs" />
     <None Include="Platforms\**\*.cs" />
     <None Include="Resources\*.cs" />
+    <Compile Remove="Platforms\Ios\**" />
+    <Compile Remove="Platforms\Mac\**" />
+    <Compile Remove="Platforms\Tizen\**" />
+    <Compile Remove="Platforms\Uap\**" />
+    <Compile Remove="Platforms\Wpf\**" />
     <Compile Remove="Resources\*.cs" />
+    <EmbeddedResource Remove="Platforms\Ios\**" />
+    <EmbeddedResource Remove="Platforms\Mac\**" />
+    <EmbeddedResource Remove="Platforms\Tizen\**" />
+    <EmbeddedResource Remove="Platforms\Uap\**" />
+    <EmbeddedResource Remove="Platforms\Wpf\**" />
+    <None Remove="Platforms\Ios\**" />
+    <None Remove="Platforms\Mac\**" />
+    <None Remove="Platforms\Tizen\**" />
+    <None Remove="Platforms\Uap\**" />
+    <None Remove="Platforms\Wpf\**" />
+    <Page Remove="Platforms\Ios\**" />
+    <Page Remove="Platforms\Mac\**" />
+    <Page Remove="Platforms\Tizen\**" />
+    <Page Remove="Platforms\Uap\**" />
+    <Page Remove="Platforms\Wpf\**" />
     <None Include="readme.txt" pack="true" PackagePath="." />
   </ItemGroup>
 
@@ -42,14 +61,12 @@
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.ios')) ">
     <None Remove="Platforms\Apple\**\*.cs" />
-    <None Remove="Platforms\Ios\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Ios\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.mac')) ">
     <None Remove="Platforms\Apple\**\*.cs" />
-    <None Remove="Platforms\Mac\**\*.cs" />
     <Compile Include="Platforms\Apple\**\*.cs" />
     <Compile Include="Platforms\Mac\**\*.cs" />
   </ItemGroup>
@@ -75,7 +92,6 @@
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
-    <None Remove="Platforms\Tizen\**\*.cs" />
     <Compile Include="Platforms\Tizen\**\*.cs" />
   </ItemGroup>
 

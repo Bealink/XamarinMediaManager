@@ -89,11 +89,14 @@ namespace MediaManager
             else
                 sessionIntent = Context.PackageManager.GetLaunchIntentForPackage(Context.PackageName);
 
-            PendingIntentFlags flag = 0;
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M)
-                flag = PendingIntentFlags.Immutable;
+            var pendingIntentFlags = (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.S)
+                 ? PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Mutable
+                 : PendingIntentFlags.UpdateCurrent;
 
-            return PendingIntent.GetActivity(Context, 0, sessionIntent, flag);
+            //if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M)
+            //    pendingIntentFlags = PendingIntentFlags.Immutable;
+
+            return PendingIntent.GetActivity(Context, 0, sessionIntent, pendingIntentFlags);
         }
 
         public override Dictionary<string, string> RequestHeaders

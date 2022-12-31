@@ -100,12 +100,12 @@ namespace MediaManager.Platforms.Android.MediaSession
         protected virtual void PrepareNotificationManager()
         {
             MediaDescriptionAdapter = new MediaDescriptionAdapter();
-            PlayerNotificationManager = Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.CreateWithNotificationChannel(
-                this,
-                ChannelId,
-                Resource.String.exo_download_notification_channel_name,
-                ForegroundNotificationId,
-                MediaDescriptionAdapter);
+            //PlayerNotificationManager = Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.CreateWithNotificationChannel(
+            //    this,
+            //    ChannelId,
+            //    Resource.String.exo_download_notification_channel_name,
+            //    ForegroundNotificationId,
+            //    MediaDescriptionAdapter);
 
             //Needed for enabling the notification as a mediabrowser.
             NotificationListener = new NotificationListener();
@@ -127,8 +127,22 @@ namespace MediaManager.Platforms.Android.MediaSession
                 }
             };
 
-            PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSizeForward.TotalMilliseconds);
-            PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSizeBackward.TotalMilliseconds);
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                var channel = new NotificationChannel(ChannelId, "MediaManager", NotificationImportance.Low);
+                var nm = (NotificationManager)GetSystemService(NotificationService);
+                nm.CreateNotificationChannel(channel);
+            }
+
+            PlayerNotificationManager = new Com.Google.Android.Exoplayer2.UI.PlayerNotificationManager.Builder(
+                    this,
+                    ForegroundNotificationId,
+                    ChannelId,
+                    MediaDescriptionAdapter)
+                .Build();
+
+            //PlayerNotificationManager.SetFastForwardIncrementMs((long)MediaManager.StepSizeForward.TotalMilliseconds);
+            //PlayerNotificationManager.SetRewindIncrementMs((long)MediaManager.StepSizeBackward.TotalMilliseconds);
 
             //TODO: not sure why this is broken? Maybe in the binding
             //PlayerNotificationManager.SetNotificationListener(NotificationListener);
